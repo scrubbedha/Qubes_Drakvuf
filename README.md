@@ -178,7 +178,7 @@ Receiving objects: 100% (7837/7837), 6.62 MiB | 723.00 KiB/s, done.
 Resolving deltas: 100% (3871/3871), done.
 ```
 3. Create builder.conf in ~/qubes-builder:
-```toml
+```bash
 [user@untrusted-qubes-builder qubes-builder]$ vim builder.conf
 RELEASE := 4.2 
 DIST_DOM0 ?= fc37
@@ -200,7 +200,7 @@ USE_QUBES_REPO_VERSION = $(RELEASE)
 [user@untrusted-qubes-builder qubes-builder]$ sudo dnf install distribution-gpg-keys -y
 ```
 5. A .patch file is a text file that contains the differences between two sets of code. It's a way of showing what changes need to be made to the original code in order to turn it into the updated code Create the .patch file below in the vmm-xen folder named `1203-libxl-altp2m-default.patch` and also add it to `xen.spec.in`:
-```json
+```bash
 [user@untrusted-qubes-builder qubes-vmm-xen]$ vim 1203-libxl-altp2m-default.patch 
 --- a/tools/libs/light/libxl_create.c
 +++ b/tools/libs/light/libxl_create.c
