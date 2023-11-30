@@ -28,7 +28,7 @@ Let's break the [DRAKVUF recommended](https://github.com/tklengyel/drakvuf/blob/
 `GRUB_CMDLINE_XEN_DEFAULT="dom0_mem=2048M,max:2048M dom0_max_vcpus=2 dom0_vcpus_pin=1 force-ept=1 ept=ad=0 hap_1gb=0 hap_2mb=0 altp2m=1 hpet=legacy-replacement smt=0 sched=credit"`
 
 1. `dom0_mem=2048M,max:2048M dom0_max_vcpus=2 dom0_vcpus_pin=1`: These options set a hard memory maximum allocation of 2048M for dom0 (adjust as needed)as well as [define the maximum number of dom0 vCPUs and number of vCPUs to pin to dom0](https://wiki.xenproject.org/wiki/Tuning_Xen_for_Performance#Dom0_vCPUs). If you go this route don't forget to create a [xen-user.xml](https://forum.qubes-os.org/t/why-are-updates-forcing-the-grub-smt-off-option/15326/12) to appropriately exclude the vCPUs you pin to dom0. domU guest [vCPUs can optionally be pinned](https://wiki.xenproject.org/wiki/Tuning_Xen_for_Performance#vCPU_Pinning_for_guests) as well. 
-    > [!INFO] Anecdotal reports suggest [the above arguments are not strictly required for DRAKVUF](https://pub.nethence.com/security/drakvuf) to function normally.
+    > :information_source: Anecdotal reports suggest [the above arguments are not strictly required for DRAKVUF](https://pub.nethence.com/security/drakvuf) to function normally.
 
 2. `force-ept=1`: This appropriately named option forces Xen to use Extended Page Tables (EPT), crucial for use of Intel's [Hardware Assisted Paging (HAP)](https://wiki.xenproject.org/wiki/Tuning_Xen_for_Performance#HAP_vs._shadow) implementation. The AMD work-alike equivalent of EPT is named [Rapid Virtualization Indexing (RVI)](https://www.techtarget.com/searchitoperations/definition/AMD-V-AMD-virtualization). 
 
