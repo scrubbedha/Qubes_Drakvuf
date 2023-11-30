@@ -112,7 +112,7 @@ Unfortunately, Flask/XSM is not yet fully integrated into Qubes. This is still t
 
 Assumingly there is a yet-undiscovered vulnerability in LibVMI or Drakvuf, a technically skilled attacker could possibly engineer a specific memory layout or other condition within the monitored guest domain. When this domain is introspected, it could trigger the hypothertical vulnerability, potentially leading to undefined behavior, code execution, or privilege escalation within dom0.
 
-</del> Scenario 4: Abuse of `altp2m` views</del>
+<del>Scenario 4: Abuse of `altp2m` views</del>
 
 This scenario does *not* apply to DRAKVUF. Confirmed by [tklengyel]( https://github.com/QubesOS/qubes-issues/issues/2417#issuecomment-1832979273):
 
