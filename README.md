@@ -139,7 +139,7 @@ Admittedly, a scenario 5 attack as described would be highly targeted and requir
 
 Furthermore, Qubes patches are designed to harden Xen hypervisor against such threats. Refer to the numerous [XSA](https://xenbits.xen.org/xsa/) Xen security advisories where vanilla Xen hypervisor is vulnerable but [Qubes](https://www.qubes-os.org/news/2023/10/10/xsas-released-on-2023-10-10/#xsas-that-do-not-affect-the-security-of-qubes-os) is not.
 
-For the author, as a security engineer, hypothesizing and unraveling such scenarios is an intriguing exercise. They serve as valuable thought experiments that prompt regular re-evaluation of one's own operational security (OPSEC) and continuous iteration upon one's security posture. Even if your threat model doesn't warrant considering these extremes, at the very least such exercises keep you sharp and hypervigilant.
+For the author, as a security engineer, hypothesizing and unraveling such scenarios is an intriguing exercise. They serve as valuable thought experiments that prompt regular re-evaluation of one's own operational security (OPSEC) and continuous iteration upon one's security posture. Even if your threat model doesn't warrant considering these extremes, at the very least such thought exercises keep you sharp and hypervigilant.
 
 In summary, it's always wise to proceed with caution! Realistically evaluate risks against your personal threat model and avoid aggrandizing perceived threats that aren't grounded in reality.
 
