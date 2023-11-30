@@ -772,57 +772,8 @@ Date:   Sun Nov 19 17:42:09 2023 -0500
     Update LibVMI & Xen (#1744)
 [...]
 ```
-24. Running autoreconf - this step is necessary to generate configuration scripts for the build:
+24. Meson is a build system designed to optimize programmer productivity. We use it here to set up the build environment:
 ```bash
-[user@untrusted-qubes-builder drakvuf]$ autoreconf -vi
-autoreconf: export WARNINGS=
-autoreconf: Entering directory '.'
-autoreconf: configure.ac: not using Gettext
-autoreconf: running: aclocal --install -I m4
-[...]
-configure.ac:850: the top level
-autoreconf: running: /usr/bin/autoheader
-autoreconf: running: automake --add-missing --copy --no-force
-autoreconf: Leaving directory '.'
-```
-25. Before we can build we have to patch Drakvuf's `xen_set_altp2m_params`. It will always return -1 and fail on Qubes and Drakvuf will exit assuming altp2m isn't enabled. I speculate it fails for the same reason `xen-access` fails (calling back earlier from the guide):
-```bash 
-[root@dom0 src]# xen-access 54 altp2m_write_no_gpt 
-xenaccess init 
-max_gpfn = fefff 
-starting altp2m_write_no_gpt 
-54 Error -1 enabling altp2m on domain
-```
-It's a hacky cudge but it skips the get|set HVM_PARAM_ALTP2M check:
-```bash
-[user@untrusted-qubes-builder drakvuf]$ cat 0001-hvm-param-altp2m.patch 
-diff --git a/src/xen_helper/xen_helper.c b/src/xen_helper/xen_helper.c
-index d33a105..5d85ffc 100644
---- a/src/xen_helper/xen_helper.c
-+++ b/src/xen_helper/xen_helper.c
-@@ -357,7 +357,7 @@ bool xen_set_altp2m_params(xen_interface_t* xen, domid_t domID)
-     if (rc < 0)
-     {
-         fprintf(stderr, "Failed to get HVM_PARAM_ALTP2M, RC: %i\n", rc);
--        return 0;
-+        return 1;
-     }
- 
-     if (param_altp2m != XEN_ALTP2M_external)
-@@ -366,7 +366,7 @@ bool xen_set_altp2m_params(xen_interface_t* xen, domid_t domID)
-         if (rc < 0)
-         {
-             fprintf(stderr, "Failed to set HVM_PARAM_ALTP2M, RC: %i\n", rc);
--            return 0;
-+            return 1;
-         }
-     }
-
-## git apply the patch
-[user@untrusted-qubes-builder drakvuf]$ git apply 0001-hvm-param-altp2m.patch 
-```
-26. Meson is a build system designed to optimize programmer productivity. We use it here to set up the build environment:
-```c++
 [user@untrusted-qubes-builder drakvuf]$ meson setup build --native-file llvm.ini -Ddebug=true -Dhardening=true -Dthreadsafety=true
 [...] 
 DRAKVUF (C) Tamas K Lengyel 2014-2023 1.1
@@ -887,21 +838,21 @@ DRAKVUF (C) Tamas K Lengyel 2014-2023 1.1
 
 Found ninja-1.10.2 at /usr/bin/ninja     
 ```
-27. Ninja is a small build system designed to run builds in parallel. We use it here to build the project. Note that we're not installing anything yet (don't use install with -C  argument as this _will_ install drakvuf):
+25. Ninja is a small build system designed to run builds in parallel. We use it here to build the project. Note that we're not installing anything yet (don't use install with -C  argument as this _will_ install drakvuf):
 ```bash
 [user@untrusted-qubes-builder drakvuf]$ cd build && ninja
 [126/126] Linking target drakvuf
 ```
-28. We need to move `volatility3`, `libvmi`, and `dwarf2json` into `drakvuf` and package it up. This is necessary to keep all the required components together.
+26. We need to move `volatility3`, `libvmi`, and `dwarf2json` into `drakvuf` and package it up. This is necessary to keep all the required components together.
 ```bash
 [user@untrusted-qubes-builder ~]$ mv volatility3/ libvmi/ dwarf2json/ drakvuf/
 [user@untrusted-qubes-builder ~]$ tar cvzf ~/drakvuf.tar.gz drakvuf
 ```
-29. We use `qvm-run --pass-io`  like before to securely transfer the package to dom0.
+27. We use `qvm-run --pass-io`  like before to securely transfer the package to dom0.
 ```bash
 [armchairshaman@dom0 ~] qvm-run --pass-io untrusted-qubes-builder 'cat drakvuf.tar.gz' > drakvuf.tar.gz
 ```
-30. We test LibVMI on a Windows HVM by running `vmi-win-guid`. This is necessary to ensure that LibVMI is working correctly before we proceed.
+28. We test LibVMI on a Windows HVM by running `vmi-win-guid`. This is necessary to ensure that LibVMI is working correctly before we proceed.
 ```bash
 [armchairshaman@dom0 ~]$ tar xvzf drakvuf.tar.gz 
 [armchairshaman@dom0 ~]$ cd drakvuf/libvmi/build/examples
@@ -948,12 +899,12 @@ Windows Kernel found @ 0x25aa000
         Section 23: .rsrc
         Section 24: .reloc
 ```
-31. From the output of the previous step, we need the operative bits `PDB GUID` and `Kernel filename`. These will be used in subsequent steps with volatility3 and dwarf2json.
+29. From the output of the previous step, we need the operative bits `PDB GUID` and `Kernel filename`. These will be used in subsequent steps with volatility3 and dwarf2json.
 ```bash
 PDB GUID: daddb88936de450292977378f364b1101
 Kernel filename: ntkrnlmp.pdb
 ```
-32. We switch back to `qubes-untrusted-builder` (or any other VM with netvm access) to use `volatility3` to generate debug symbols for our kernel:
+30. We switch back to `qubes-untrusted-builder` (or any other VM with netvm access) to use `volatility3` to generate debug symbols for our kernel:
 ```bash
 [user@untrusted-qubes-builder ~]$ cd drakvuf/volatility3/
 ## Setup and activate venv same as before
@@ -974,7 +925,7 @@ daddb88936de450292977378f364b1101.json.xz
 [user@untrusted-qubes-builder volatility3]$ xz -d daddb88936de450292977378f364b1101.json.xz 
 [user@untrusted-qubes-builder volatility3]$ cp daddb88936de450292977378f364b1101.json ~/sandbox_win-7-hvm.json
 ```
-33. We switch back to dom0 to finally run Drakvuf with some basic arguments and plugins. We also transfer our `pdbconv.py` NT kernel debug JSON to dom0:
+31. We switch back to dom0 to finally run Drakvuf with some basic arguments and plugins. We also transfer our `pdbconv.py` NT kernel debug JSON to dom0:
 ```bash
 [armchairshaman@dom0 ~]$ qvm-run --pass-io --filter-escape-chars untrusted-qubes-builder 'cat ~/sandbox_win-7-hvm.json' > sandbox_win-7-hvm.json
 ## Optionally move the drakvuf folder to /root and chown
@@ -985,7 +936,7 @@ daddb88936de450292977378f364b1101.json.xz
 ## Make the memory/file dumps folder
 [root@dom0 drakvuf]$ mkdir dumps
 ## Finally run drakvuf
-[root@dom0 drakvuf]$ ./build/drakvuf -a syscalls -a memdump -a fileextractor -D /root/drakvuf/dumps -F -j 60 -t 600 -i 4048 --memdump-dir /root/drakvuf/dumps -r /root/drakvuf/sandbox_win-7-hvm.json -d sandbox_win-7-hvm --disable-sysret 2>&1 | tee sandbox_win-7-hvm.`date +%s`.drakvuf.txt | ccze -A
+[root@dom0 drakvuf]$ ./build/drakvuf -a syscalls -a memdump -a fileextractor -D /root/drakvuf/dumps -F -j 60 -t 600 -i 4048 --memdump-dir /root/drakvuf/dumps -r /root/drakvuf/sandbox_win-7-hvm.json -d sandbox_win-7-hvm --disable-sysret --skip-altp2m-check 2>&1 | tee sandbox_win-7-hvm.`date +%s`.drakvuf.txt | ccze -A
 ```
 The Drakvuf arguments explained are as follows:
 
@@ -996,10 +947,11 @@ The Drakvuf arguments explained are as follows:
 - `-r /root/drakvuf/sandbox_win-7-hvm.json`: This argument sets the path to the JSON file containing the debug symbols for the kernel.
 - `-d sandbox_win-7-hvm`: This argument sets the name of the domain to monitor.
 - `--disable-sysret`: This argument disables the sysret plugin.
+- `--skip-altp2m-check`: Required on Qubes to skip the altp2m check that will always return -1.
 
 The `ccze -A` command at the end is optional. It's a robust log colorizer, which makes the output of Drakvuf more readable by adding color to it. You'll need to install it with `qubes-dom0-update`. 
 
-34. Injecting a malware sample using DRAKVUF's `injector` hijacking the PID of taskmgr.exe (or any other PID with rwx access):
+32. Injecting a malware sample using DRAKVUF's `injector` hijacking the PID of taskmgr.exe (or any other PID with rwx access):
 ```bash
 [root@dom0 drakvuf]# ./build/injector -r /root/drakvuf/sandbox_win-7-hvm.json -d sandbox_win-7-hvm -i 1812 -m writefile -B /root/drakvuf/bumblebee_onkomsi2_loader.exe -e "C:\Users\user\AppData\Local\Temp\bumblebee_onkomsi2_loader.exe"
 ```
