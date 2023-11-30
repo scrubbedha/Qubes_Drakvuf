@@ -435,7 +435,7 @@ We can also try to extend libvirt/xen.xml. The process involves dropping an xml 
     <acpi/>
     <apic/>
     <viridian/>
-    <nestedhvm/>
+    <nestedhvm/> <!-- Enabling nestedhvm is DANGEROUS -->
     <altp2m mode='external'/>
     <hap state='on'/> <!-- enable Hardware Assisted Paging -->
 {% endblock %}
