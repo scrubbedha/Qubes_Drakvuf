@@ -30,7 +30,7 @@ Let's break the [DRAKVUF recommended](https://github.com/tklengyel/drakvuf/blob/
 1. `dom0_mem=2048M,max:2048M dom0_max_vcpus=2 dom0_vcpus_pin=1`: These options set a hard memory maximum allocation of 2048M for dom0 (adjust as needed)as well as [define the maximum number of dom0 vCPUs and number of vCPUs to pin to dom0](https://wiki.xenproject.org/wiki/Tuning_Xen_for_Performance#Dom0_vCPUs). If you go this route don't forget to create a [xen-user.xml](https://forum.qubes-os.org/t/why-are-updates-forcing-the-grub-smt-off-option/15326/12) to appropriately exclude the vCPUs you pin to dom0. domU guest [vCPUs can optionally be pinned](https://wiki.xenproject.org/wiki/Tuning_Xen_for_Performance#vCPU_Pinning_for_guests) as well. 
     > :information_source: Anecdotal reports suggest [the above arguments are not strictly required for DRAKVUF](https://pub.nethence.com/security/drakvuf) to function normally.
 
-2. `force-ept=1`: This appropriately named option forces Xen to use Extended Page Tables (EPT), crucial for use of Intel's [Hardware Assisted Paging (HAP)](https://wiki.xenproject.org/wiki/Tuning_Xen_for_Performance#HAP_vs._shadow) implementation. The AMD work-alike equivalent of EPT is named [Rapid Virtualization Indexing (RVI)](https://www.techtarget.com/searchitoperations/definition/AMD-V-AMD-virtualization). 
+2. `force-ept=1`: This appropriately named option forces Xen to use Extended Page Tables (EPT), crucial for use of Intel's [Hardware Assisted Paging (HAP)](https://wiki.xenproject.org/wiki/Tuning_Xen_for_Performance#HAP_vs._shadow) implementation. The AMD work-alike equivalent of EPT is named [Rapid Virtualization Indexing (RVI)](https://www.techtarget.com/searchitoperations/definition/AMD-V-AMD-virtualization). This option is needed on some hardware according to [tklengyel who elaborates:](https://github.com/QubesOS/qubes-issues/issues/2417#issuecomment-1832979273)*"`force-ept=1` was needed on some hardware to enable EPT, people ran into issues where it wasn't getting enabled, so having this in the default command line is just easier even if its unnecessary on most platforms where EPT gets enabled just fine."*
 
     Xen project history boffins will fondly remember these enhancements were introduced back in [version 4.5](https://xenproject.org/2015/01/15/less-is-more-in-the-new-xen-project-4-5-release/)  
     
@@ -59,12 +59,16 @@ Let's break the [DRAKVUF recommended](https://github.com/tklengyel/drakvuf/blob/
 
 3. `ept=ad=0`: Shortly put this option disables the accessed and thus "dirty" or sullied flags in EPT. Inevitably resulting in a performance as it was introduced as a protective measure against the [Meltdown](https://en.wikipedia.org/wiki/Meltdown_(security_vulnerability) [transient execution class](https://www.usenix.org/system/files/sec19fall_canella_prepub.pdf) of CPU vulnerabilities back in 2018. A mechanism to keep track of whether an arbitrary memory page has been accessed or modified theoretically increases the difficulty for exploitation.
     
-     `ept=ad=0` is required according to [tklengyel]( https://github.com/QubesOS/qubes-issues/issues/2417#issuecomment-1832979273) who adds additional context:
+     `ept=ad=0` is required according to [tklengyel](https://github.com/QubesOS/qubes-issues/issues/2417#issuecomment-1832979273) who adds additional context:
      *"`ept=ad=0` is required but not because security reasons but because there is a bug with altp2m + PML that crashes Xen. Disabling AD disables PML as well. Neither AD nor PML is needed for anything other then live migration so turning them off is no issue and may actually give a little performance benefit."*
 
 4. `hap_1gb=0` and `hap_2mb=0`: These flags disable the use of 1GB and 2MB page sizes (Huge Pages) with hardware-assisted paging (HAP). Huge pages can improve performance, but, if you are noticing a developing trend here, it comes at a security tradeoff. Potentially increasing the granularity of memory protection and perhaps increasing the vulnerability to certain types of attacks like [Rowhammer](https://en.wikipedia.org/wiki/Row_hammer) 
 
- 5. `hpet=legacy-replacement`: this option forces Xen to use of High Precision Event Timer (HPET) over other more modern clock sources. HPET is definitely slower than alternatives - namely TSC. Frankly, I'm not even certain you need this particular commandline option since Xen outright disables it on my machine with some prejudice citing irreliability concerns:
+ 5. `hpet=legacy-replacement`: this option forces Xen to use of High Precision Event Timer (HPET) over other more modern clock sources. HPET is definitely slower than alternatives - namely TSC. [tklengyel elucidates on timing quirks:](https://github.com/QubesOS/qubes-issues/issues/2417#issuecomment-1832979273) 
+ 
+     *" `hpet=legacy-replacement` is due some newer hardware having quirks with their timing and Xen wouldn't boot unless this setting is used. I don't quite understand the issue but it's easier to have this as the default then help everyone figure out what option they need when they run into Xen not booting."*
+ 
+      Worthwhile to note, that Xen outright disables it on this author's machine with some prejudice citing irreliability concerns:
 ```bash
   [root@dom0 ~]$ xl dmesg | grep -i 'hpet'
   (XEN) ACPI: HPET 99B3A350, 0038 (r1 COREv4 COREBOOT 0 CORE 20220331)
