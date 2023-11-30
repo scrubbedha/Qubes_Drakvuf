@@ -91,7 +91,7 @@ Before we go any further, (***skip to the bottom if you want to jump straight to
 
 Joanna Rutkovska and Tamas K Lengyel, respective creators of QubesOS and Drakvuf, discuss the security implications of VM introspection with regard to Qubes OS architecture in their [GitHub](https://github.com/QubesOS/qubes-issues/issues/2417#issuecomment-258604397) [dialogues](https://github.com/QubesOS/qubes-issues/issues/2417#issuecomment-264290983) in issue #2417. The overarching concerns are the potential for undermining hard isolation between Qubes domains and potential establishment of covert channels between VMs.
 
-To counter these vulnerabilities, enabling Flask/XSM in Qubes and implementing the suggested policy as demonstrated in this [commit](https://github.com/tklengyel/xen/commit/bfdf2068b1ddf4eb1cd8338375f6f76afe862f63) might enhance overall system security. A proper Flask/XSM implementation could offer more granular and precise access control mechanismx, thereby considerably reducing the hypervisor attack surface. 
+To counter these vulnerabilities, enabling Flask/XSM in Qubes and implementing the suggested policy as demonstrated in this [commit](https://github.com/tklengyel/xen/commit/bfdf2068b1ddf4eb1cd8338375f6f76afe862f63) might enhance overall system security. A proper Flask/XSM implementation could offer more granular and precise access control mechanisms, thereby considerably reducing the hypervisor attack surface. 
 
 Unfortunately, Flask/XSM is not yet fully integrated into Qubes. This is still true today as of this writing in Qubes 4.2.0-rc5.
 
