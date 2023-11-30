@@ -41,7 +41,7 @@ Let's break the [DRAKVUF recommended](https://github.com/tklengyel/drakvuf/blob/
  
     > :information_source: Performance wise, in my testing DRAKVUF in a Qubes Xen-on-Xen nestedvirt Ubuntu HVM environment was abysmal anyway. Another salient reason to avoid it.
    
-3. `ept=ad=0`: Shortly put this option disables the accessed and thus "dirty" or sullied flags in EPT. It was introduced as a protective measure against the [Meltdown](https://en.wikipedia.org/wiki/Meltdown_(security_vulnerability) [transient execution class](https://www.usenix.org/system/files/sec19fall_canella_prepub.pdf) of CPU vulnerabilities back in 2018. A mechanism to keep track of whether an arbitrary memory page has been accessed or modified theoretically increases the difficulty for exploitation. 
+3. `ept=ad=0`: Shortly put this option disables the accessed and thus "dirty" or sullied flags in EPT. It was introduced as a protective measure against the [Meltdown](https://en.wikipedia.org/wiki/Meltdown_(security_vulnerability))[transient execution class](https://www.usenix.org/system/files/sec19fall_canella_prepub.pdf) of CPU vulnerabilities back in 2018. A mechanism to keep track of whether an arbitrary memory page has been accessed or modified theoretically increases the difficulty for exploitation. 
     
      `ept=ad=0` is required according to [tklengyel](https://github.com/QubesOS/qubes-issues/issues/2417#issuecomment-1832979273) who adds additional context:
      *"`ept=ad=0` is required but not because security reasons but because there is a bug with altp2m + PML that crashes Xen. Disabling AD disables PML as well. Neither AD nor PML is needed for anything other then live migration so turning them off is no issue and may actually give a little performance benefit."*
