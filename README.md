@@ -2,9 +2,9 @@
 ***DRAKVUF® + libVMI + volatility3 + dwarf2json*** 
 ***(tested on QubesOS 4.2.0-rc5 + Xen 4.17.2-5)***
 
->[!IMPORTANT] Support open-source projects! Please take the time to [donate directly to the Qubes OS Project](https://www.qubes-os.org/donate/) alternatively, buy some cool [Qubes shirts/swag from Cyphermarket](https://www.cyphermarket.com/qubes/) an outfit that donates [50% of their profits](https://www.cyphermarket.com/about-cypher-market/) to the Qubes OS Project and other FOSS projects. If you find DRAKVUF® useful, consider [donating](https://www.honeynet.org/2012/12/18/donate-to-the-honeynet-project/) to the [Honeynet Project](https://www.honeynet.org/) who supports the development of DRAKVUF®.
+> :information_source: **Support open-source projects! Please take the time to [donate directly to the Qubes OS Project](https://www.qubes-os.org/donate/) alternatively, buy some cool [Qubes shirts/swag from Cyphermarket](https://www.cyphermarket.com/qubes/) an outfit that donates [50% of their profits](https://www.cyphermarket.com/about-cypher-market/) to the Qubes OS Project and other FOSS projects. If you find DRAKVUF® useful, consider [donating](https://www.honeynet.org/2012/12/18/donate-to-the-honeynet-project/) to the [Honeynet Project](https://www.honeynet.org/) who supports the development of DRAKVUF®.**
 
-> [!WARNING] Before stepping into the technical depth of this guide, be aware that a general understanding of key security and virtualization concepts, as well as intermediate to advanced familiarity with QubesOS and Xen internals, is a prerequisite.
+> :warning: **Before stepping into the technical depth of this guide, be aware that a general understanding of key security and virtualization concepts, as well as intermediate to advanced familiarity with QubesOS and Xen internals, is a prerequisite.**
 
   Before diving into the complexities of setting up DRAKVUF on QubesOS, a little introductory context on both. QubesOS is a reasonably secure Xen-based distribution of Linux operating system that compartmentalizes your digital life into isolated virtual machines. DRAKVUF, on the other hand,  is a binary analysis tool that uses Xen-based virtualization machine inspection to track the execution of arbitrary binaries - an invaluable tool for malware analysts and cybersecurity researchers.
 
@@ -123,7 +123,7 @@ Let's assume the malware sample executed within our sandbox is more modern and p
 
 The malware probes the sandboxed environment and conclusively identifies it as a Xen hypervisor aware VM by checking that your network interface MAC address starts with the [Xen (OUI) Prefix](https://wiki.xenproject.org/wiki/Xen_Networking#MAC_addresses) `"\x00\x16\x3E"` or `00:16:3e` or detects the installation of Windows Xen PV drivers or Qubes Windows Tools [QWT/qubes-windows-tools-cross](https://github.com/tabit-pro/qubes-windows-tools-cross/). 
 
->[!WARNING] It is advisable to discontinue using QWT and Xen Project's Windows PV drivers in light of the[recent](https://lists.xenproject.org/archives/html/xen-announce/2023-07/msg00000.html) [compromise](https://www.qubes-os.org/news/2023/07/27/qsb-091/).
+> :warning: **It is advisable to discontinue using QWT and Xen Project's Windows PV drivers in light of the[recent](https://lists.xenproject.org/archives/html/xen-an nunce/2023-07/msg00000.html) [compromise](https://www.qubes-os.org/news/2023/07/27/qsb-091/).**
 
 Once Al-Khaser or a similar functionality identifies your Xen HVM, the executing malware may start deliberately positioning specially crafted code, buffer overflow, or poisoned data in its memory space. As an example, consider a scenario with a parsing tool that has a buffer overflow vulnerability. The exact memory layout of the monitored guest VM could then trigger this overflow, leading to arbitrary code execution or a denial of service in the normally isolated dom0. 
 
@@ -502,7 +502,7 @@ Now, if the patch was successful, as soon as you attempt to `qvm-start` this dom
 2023-10-22 02:53:02.069+0000: libxl: libxl_create.c:1327:libxl__domain_config_setdefault: nestedhvm and altp2mhvm cannot be used together
 ```
 This is expected. When we check that log file, we find the evidence we are looking for. altp2m is indeed enabled for our sandbox_ prefixed HVM and our patch has worked as intended. 
->[!INFO] Remember to remove the `<nestedhvm/>` line from `sandbox_win-7-hvm.xml` after validating this.
+> :information_source **Remember to remove the `<nestedhvm/>` line from `sandbox_win-7-hvm.xml` after validating this.**
 16. Let's return to `untrusted-qubes-builder` and convert Drakvuf's list of Debian apt [dependencies](https://drakvuf.com/) to their Fedora dnf equivalents:
 ```bash
 [user@untrusted-qubes-builder ~]$ sudo dnf groupinstall "Development Tools" -y
