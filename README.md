@@ -496,7 +496,7 @@ Now, if the patch was successful, as soon as you attempt to `qvm-start` this dom
 2023-10-22 02:53:02.069+0000: libxl: libxl_create.c:1327:libxl__domain_config_setdefault: nestedhvm and altp2mhvm cannot be used together
 ```
 This is expected. When we check that log file, we find the evidence we are looking for. altp2m is indeed enabled for our sandbox_ prefixed HVM and our patch has worked as intended. 
-> :information_source **Remember to remove the `<nestedhvm/>` line from `sandbox_win-7-hvm.xml` after validating this.**
+> :information_source: **Remember to remove the `<nestedhvm/>` line from `sandbox_win-7-hvm.xml` after validating this.**
 16. Let's return to `untrusted-qubes-builder` and convert Drakvuf's list of Debian apt [dependencies](https://drakvuf.com/) to their Fedora dnf equivalents:
 ```bash
 [user@untrusted-qubes-builder ~]$ sudo dnf groupinstall "Development Tools" -y
