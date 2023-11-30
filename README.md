@@ -12,13 +12,13 @@
   
    In this guide, I delve into how to use these powerful security-focused Xen projects together. 
    
-> [!WARNING] Working with DRAKVUF in a Qubes environment necessitates patching [qubes-vmm-xen](https://github.com/search?q=repo%3AQubesOS%2Fqubes-vmm-xen++.patch&type=code) to enable the [external altp2m modality](https://xenproject.org/2016/04/13/stealthy-monitoring-with-xen-altp2m/) in Xen Hypervisor as well as adding or modifying commandline argument(s) supplied to GRUB_CMDLINE_XEN_DEFAULT.
+> :warning: **Working with DRAKVUF in a Qubes environment necessitates patching qubes-vmm-xen to enable the external altp2m modality in Xen Hypervisor as well as adding or modifying commandline argument(s) supplied to GRUB_CMDLINE_XEN_DEFAULT.**
 
-> [!WARNING] This guide may deviate from accepted hygienic Qubes best security practices, violate dom0 isolation concepts, and modify other sane defaults put forward by the Qubes OS project. VM introspection is not officially supported and [poses many problems to the security of a system like Qubes OS architecture-wise](https://github.com/QubesOS/qubes-issues/issues/2417#issuecomment-258604397). VMI access to all domains may [negate any hard isolation between them](https://github.com/QubesOS/qubes-issues/issues/2417#issuecomment-264290983).
+> :warning: **This guide may deviate from accepted hygienic Qubes best security practices, violate dom0 isolation concepts, and modify other sane defaults put forward by the Qubes OS project. VM introspection is not officially supported and poses many problems to the security of a system like Qubes OS architecture-wise. VMI access to all domains may negate any hard isolation between them.**
 
-> [!WARNING] Executing malware, even in a sandboxed environment, could have unintended consequences. Also, transferring externally compiled [qubes-builder appVM](https://www.qubes-os.org/doc/qubes-iso-building/#build-environment) untrusted binaries and CLI tools [into dom0](https://qubes-doc-rst.readthedocs.io/en/latest/user/how-to-guides/how-to-copy-from-dom0.html#copying-to-dom0) into dom0 must be done with utmost caution especially those designed to analyze and manipulate potentially malicious memory dumps, carved files, and other artifacts.
+> :warning: **Executing malware, even in a sandboxed environment, could have unintended consequences. Also, transferring externally compiled qubes-builder appVM untrusted binaries and CLI tools into dom0 into dom0 must be done with utmost caution especially those designed to analyze and manipulate potentially malicious memory dumps, carved files, and other artifacts.**
 
->[!INFO] Cautionary warnings aside, the author will try to adhere to Qubes security practices to ensure the integrity of dom0 (e.g. pulling down GPG keys of DRAKVUF, libVMI, dwarf2json, and volatility3 developers, verifying git release tags and/or commit signatures where possible). 
+> :information_source: **Cautionary warnings aside, the author will try to adhere to Qubes security practices to ensure the integrity of dom0 (e.g. pulling down GPG keys of DRAKVUF, libVMI, dwarf2json, and volatility3 developers, verifying git release tags and/or commit signatures where possible).**
 
 it is inadvisable to add options to Xen's commandline that one does not fully understand the implications. Not only can misconfigured/incoherent Xen options introduce instability to the environment, weaken the security posture of Xen hypervisor, but also have the potential to increase the overall attack surface of Qubes.
 
