@@ -161,7 +161,7 @@ If any of that makes you uncomfortable, well great! Let's commiserate because yo
 [armchairshaman@dom0 ~]$ qvm-prefs untrusted-qubes-builder memory 4000
 ```
 2. From untrusted-qubes-builder clone https://github.com/QubesOS/qubes-builder and https://github.com/QubesOS/qubes-vmm-xen:
-   ```bash
+```bash
 [user@untrusted-qubes-builder ~]$ git clone https://github.com/QubesOS/qubes-builder && cd qubes-builder
 Cloning into 'qubes-builder'...
 remote: Enumerating objects: 7303, done.
