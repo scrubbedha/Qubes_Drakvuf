@@ -58,6 +58,9 @@ Let's break the [DRAKVUF recommended](https://github.com/tklengyel/drakvuf/blob/
   > :information_source: Performance wise, DRAKVUF in the nested Qubes Xen-on-Xen Ubuntu HVM virtualization environment was untenable on my machine. Consider yourself informed if you opt to go the nested HVM route. 
 
 3. `ept=ad=0`: Shortly put this option disables the accessed and thus "dirty" or sullied flags in EPT. Inevitably resulting in a performance as it was introduced as a protective measure against the [Meltdown](https://en.wikipedia.org/wiki/Meltdown_(security_vulnerability) [transient execution class](https://www.usenix.org/system/files/sec19fall_canella_prepub.pdf) of CPU vulnerabilities back in 2018. A mechanism to keep track of whether an arbitrary memory page has been accessed or modified theoretically increases the difficulty for exploitation.
+    
+     `ept=ad=0` is required according to [tklengyel]( https://github.com/QubesOS/qubes-issues/issues/2417#issuecomment-1832979273) who adds additional context:
+     *"`ept=ad=0` is required but not because security reasons but because there is a bug with altp2m + PML that crashes Xen. Disabling AD disables PML as well. Neither AD nor PML is needed for anything other then live migration so turning them off is no issue and may actually give a little performance benefit."*
 
 4. `hap_1gb=0` and `hap_2mb=0`: These flags disable the use of 1GB and 2MB page sizes (Huge Pages) with hardware-assisted paging (HAP). Huge pages can improve performance, but, if you are noticing a developing trend here, it comes at a security tradeoff. Potentially increasing the granularity of memory protection and perhaps increasing the vulnerability to certain types of attacks like [Rowhammer](https://en.wikipedia.org/wiki/Row_hammer) 
 
