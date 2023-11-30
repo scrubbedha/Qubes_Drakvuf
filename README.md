@@ -35,31 +35,12 @@ Let's break the [DRAKVUF recommended](https://github.com/tklengyel/drakvuf/blob/
 
 2. `force-ept=1`: This appropriately named option forces Xen to use Extended Page Tables (EPT), crucial for use of Intel's [Hardware Assisted Paging (HAP)](https://wiki.xenproject.org/wiki/Tuning_Xen_for_Performance#HAP_vs._shadow) implementation. The AMD work-alike equivalent of EPT is named [Rapid Virtualization Indexing (RVI)](https://www.techtarget.com/searchitoperations/definition/AMD-V-AMD-virtualization). This option is needed on some hardware according to [tklengyel who elaborates:](https://github.com/QubesOS/qubes-issues/issues/2417#issuecomment-1832979273)*"`force-ept=1` was needed on some hardware to enable EPT, people ran into issues where it wasn't getting enabled, so having this in the default command line is just easier even if its unnecessary on most platforms where EPT gets enabled just fine."*
 
-    Xen project history boffins will fondly remember these enhancements were introduced back in [version 4.5](https://xenproject.org/2015/01/15/less-is-more-in-the-new-xen-project-4-5-release/)  
-    
-    Some proponents of forcing EPT/RVI suggest it _could_ help improve nested virtuailization performance (as in running Xen on QEMU or Xen-on-Xen etc). Nested virtualization is a (divisive topic) sure to spur spirited debate amongst users on both sides of the security vs. performance tradeoff argument. 
-    
-    Worthwhile to note: the author first tested DRAKVUF on Qubes in a nested virtualization equipped Ubuntu HVM by extending `libvirt/xen.xml`. In Qubes 4.2.0-rc5 this process involves dropping an xml file following the name schema of the target domain `ubuntu-hvm.xml` in`/etc/qubes/templates/libvirt/xen/by-name` to require CPU features Intel VT-x `vmx`, AMD-V `svm` in the target HVM. As well as other features `hap=1`, and `nestedhvm=1` like this [https://forum.qubes-os.org/t/run-vms-in-proxmox-in-qubesos-crashes/17477#enable-virtualization-for-proxmox-qubesvm-in-qubesosxen-6](example):
-```xml
-[root@dom0 by-name]# cat ubuntu-hvm.xml 
-{% block cpu %}
-    <cpu mode='host-passthrough'>
-        <feature name='vmx' policy='require'/>
-        <feature name='svm' policy='require'/>
-    </cpu>
-{% endblock %}
-{% block features %}
-    <pae/>
-    <acpi/>
-    <apic/>
-    <nestedhvm/>
-    <hap state='on'/> <!-- enable Hardware Assisted Paging -->
-    <!-- <altp2m mode='external'/> don't bother messing with altp2m modes with libvirt -->
-{% endblock %}
-{% extends 'libvirt/xen.xml' %}
-```
-  > :information_source: Performance wise, DRAKVUF in the nested Qubes Xen-on-Xen Ubuntu HVM virtualization environment was untenable on my machine. Consider yourself informed if you opt to go the nested HVM route. 
+    Xen project history boffins will fondly remember these enhancements were introduced back in [version 4.5](https://xenproject.org/2015/01/15/less-is-more-in-the-new-xen-project-4-5-release/).Some proponents of forcing EPT/RVI suggest it _could_ help improve nested virtuailization performance (as in running Xen on QEMU or Xen-on-Xen etc). Nested virtualization is a divisive topic (and for good reason - see warning below) sure to spur spirited debate amongst users on both sides of the security vs. usability tradeoff argument. 
 
+    > :warning: **As of this writing Nested HVM in Xen is (https://github.com/QubesOS/qubes-issues/issues/2417#issuecomment-1833014246)[exploitably broken according to @DemiMarie who confirms that *"an L2 guest can break out to (host) dom0)"*]**
+ 
+    > :information_source: Performance wise, DRAKVUF in the nested Qubes Xen-on-Xen Ubuntu HVM virtualization environment was abysmal anyway on my machine. Another reason to avoid it.
+   
 3. `ept=ad=0`: Shortly put this option disables the accessed and thus "dirty" or sullied flags in EPT. Inevitably resulting in a performance as it was introduced as a protective measure against the [Meltdown](https://en.wikipedia.org/wiki/Meltdown_(security_vulnerability) [transient execution class](https://www.usenix.org/system/files/sec19fall_canella_prepub.pdf) of CPU vulnerabilities back in 2018. A mechanism to keep track of whether an arbitrary memory page has been accessed or modified theoretically increases the difficulty for exploitation.
     
      `ept=ad=0` is required according to [tklengyel](https://github.com/QubesOS/qubes-issues/issues/2417#issuecomment-1832979273) who adds additional context:
@@ -515,7 +496,7 @@ Now, if the patch was successful, as soon as you attempt to `qvm-start` this dom
 2023-10-22 02:53:02.069+0000: libxl: libxl_create.c:1327:libxl__domain_config_setdefault: nestedhvm and altp2mhvm cannot be used together
 ```
 This is expected. When we check that log file, we find the evidence we are looking for. altp2m is indeed enabled for our sandbox_ prefixed HVM and our patch has worked as intended. 
-> :information_source: **Remember to remove the `<nestedhvm/>` line from `sandbox_win-7-hvm.xml` after validating this.**
+> :warning: **Nestedhvm is DANGEROUS. It's disabled for good reason. Remember to remove the `<nestedhvm/>` line from `sandbox_win-7-hvm.xml` after validating this.**
 16. Let's return to `untrusted-qubes-builder` and convert Drakvuf's list of Debian apt [dependencies](https://drakvuf.com/) to their Fedora dnf equivalents:
 ```bash
 [user@untrusted-qubes-builder ~]$ sudo dnf groupinstall "Development Tools" -y
