@@ -381,7 +381,7 @@ xen-runtime-debuginfo-4.17.2-5.fc37.x86_64.rpm
 ## Modify volume group as needed
 [armchairshaman@dom0 ~]$ sudo lvcreate -n XenDrakvufBackup -s qubes_dom0/root
 ``` 
-12. 12. Normally, `qubes-dom0-update --best --allowerasing --force-xen-upgrade` would be used for a major Xen upgrade, but we will need to manually shut down all qubes and use dnf commands:
+12. Normally, `qubes-dom0-update --best --allowerasing --force-xen-upgrade` would be used for a major Xen upgrade, but we will need to manually shut down all qubes and use dnf commands:
 ```bash
 ## Shutdown all VMs
 [armchairshaman@dom0 /tmp]$ qvm-shutdown --all --wait
