@@ -87,7 +87,7 @@ Regular total system [backups](https://www.qubes-os.org/doc/how-to-back-up-resto
 
 Before we go any further, (***skip to the bottom if you want to jump straight to the step-by-step!)*** let's talk through some hypothetical security scenarios specific to Qubes, Drakvuf, LibVMI, and Xen.
     
-#### Scenario 1: Instrospection negates hard isolation between Qubes domains (covert side channels)
+#### Scenario 1: Introspection negates hard isolation between Qubes domains (covert side channels)
 
 Joanna Rutkovska and Tamas K Lengyel, respective creators of QubesOS and Drakvuf, discuss the security implications of VM introspection with regard to Qubes OS architecture in their [GitHub](https://github.com/QubesOS/qubes-issues/issues/2417#issuecomment-258604397) [dialogues](https://github.com/QubesOS/qubes-issues/issues/2417#issuecomment-264290983) in issue #2417. The overarching concerns are the potential for undermining hard isolation between Qubes domains and potential establishment of covert channels between VMs.
 
