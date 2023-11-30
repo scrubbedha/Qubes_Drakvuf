@@ -282,13 +282,7 @@ Installed:
   rpm-build-4.18.1-2.fc37.x86_64   
   rpmdevtools-9.6-2.fc37.noarch    
   systemd-container-251.14-2.fc37.x86_64 
-  systemd-rpm-macros-251.14-2.fc37.noarchE not only the salient risks but the propensity to introduce  instability to the system when enabing Drakvuf's recommended GRUB_CMDLINE_XEN_DEFAULT options . 
-
-Research huge page tables (HPT), alternate p2m external views, LibVMI VM introspection (https://wiki.xenproject.org/wiki/Virtual_Machine_Introspection) (Intel EPT /AMD RVI) , enabling alternative to 2nd level page tables (altp2m https://xenproject.org/2016/04/13/stealthy-monitoring-with-xen-altp2m/), and in general manipulation of memory mappings should be considered high risk activities with the propensity to increase attack surface in a Xen hypervisor environment.
-
-Cautionary words of warning aside, based on this authors research the gleaned understanding is that a relatively complex kill chain of exploits specifically targeting Xen would be required resulting in a full hypervisor breakout. While this would be the worst case scenario the technical barrier to this attack is thankfully steep. Make tithes to the deities of choice and pray that you are not high enough value of a target to burn a 0-day Xen hypervisor breakout on.
-
-It's also notewrothy that modern hypervisors like Xen have multiple security measures like driver domain isolation, interrupt isolation, XSM/FLASK MAC framework, two/multi-dimensional paging, amongst other custom Qubes patches to thwart such attacks.
+  systemd-rpm-macros-251.14-2.fc37.noarch
   zstd-1.5.5-1.fc37.x86_64 
 ##  Grab sources for builder-rpm and vmm-xen 
 [user@untrusted-qubes-builder qubes-builder]$ make get-sources
