@@ -804,7 +804,7 @@ index d33a105..5d85ffc 100644
 ## git apply the patch
 [user@untrusted-qubes-builder drakvuf]$ git apply 0001-hvm-param-altp2m.patch 
 ```
-25. Meson is a build system designed to optimize programmer productivity. We use it here to set up the build environment:
+26. Meson is a build system designed to optimize programmer productivity. We use it here to set up the build environment:
 ```c++
 [user@untrusted-qubes-builder drakvuf]$ meson setup build --native-file llvm.ini -Ddebug=true -Dhardening=true -Dthreadsafety=true
 [...] 
@@ -870,21 +870,21 @@ DRAKVUF (C) Tamas K Lengyel 2014-2023 1.1
 
 Found ninja-1.10.2 at /usr/bin/ninja     
 ```
-26. Ninja is a small build system designed to run builds in parallel. We use it here to build the project. Note that we're not installing anything yet (don't use install with -C  argument as this _will_ install drakvuf):
+27. Ninja is a small build system designed to run builds in parallel. We use it here to build the project. Note that we're not installing anything yet (don't use install with -C  argument as this _will_ install drakvuf):
 ```bash
 [user@untrusted-qubes-builder drakvuf]$ cd build && ninja
 [126/126] Linking target drakvuf
 ```
-27. We need to move `volatility3`, `libvmi`, and `dwarf2json` into `drakvuf` and package it up. This is necessary to keep all the required components together.
+28. We need to move `volatility3`, `libvmi`, and `dwarf2json` into `drakvuf` and package it up. This is necessary to keep all the required components together.
 ```bash
 [user@untrusted-qubes-builder ~]$ mv volatility3/ libvmi/ dwarf2json/ drakvuf/
 [user@untrusted-qubes-builder ~]$ tar cvzf ~/drakvuf.tar.gz drakvuf
 ```
-28. We use `qvm-run --pass-io`  like before to securely transfer the package to dom0.
+29. We use `qvm-run --pass-io`  like before to securely transfer the package to dom0.
 ```bash
 [armchairshaman@dom0 ~] qvm-run --pass-io untrusted-qubes-builder 'cat drakvuf.tar.gz' > drakvuf.tar.gz
 ```
-29. We test LibVMI on a Windows HVM by running `vmi-win-guid`. This is necessary to ensure that LibVMI is working correctly before we proceed.
+30. We test LibVMI on a Windows HVM by running `vmi-win-guid`. This is necessary to ensure that LibVMI is working correctly before we proceed.
 ```bash
 [armchairshaman@dom0 ~]$ tar xvzf drakvuf.tar.gz 
 [armchairshaman@dom0 ~]$ cd drakvuf/libvmi/build/examples
@@ -931,12 +931,12 @@ Windows Kernel found @ 0x25aa000
         Section 23: .rsrc
         Section 24: .reloc
 ```
-30. From the output of the previous step, we need the operative bits `PDB GUID` and `Kernel filename`. These will be used in subsequent steps with volatility3 and dwarf2json.
+31. From the output of the previous step, we need the operative bits `PDB GUID` and `Kernel filename`. These will be used in subsequent steps with volatility3 and dwarf2json.
 ```bash
 PDB GUID: daddb88936de450292977378f364b1101
 Kernel filename: ntkrnlmp.pdb
 ```
-31. We switch back to `qubes-untrusted-builder` (or any other VM with netvm access) to use `volatility3` to generate debug symbols for our kernel:
+32. We switch back to `qubes-untrusted-builder` (or any other VM with netvm access) to use `volatility3` to generate debug symbols for our kernel:
 ```bash
 [user@untrusted-qubes-builder ~]$ cd drakvuf/volatility3/
 ## Setup and activate venv same as before
@@ -957,7 +957,7 @@ daddb88936de450292977378f364b1101.json.xz
 [user@untrusted-qubes-builder volatility3]$ xz -d daddb88936de450292977378f364b1101.json.xz 
 [user@untrusted-qubes-builder volatility3]$ cp daddb88936de450292977378f364b1101.json ~/sandbox_win-7-hvm.json
 ```
-32. We switch back to dom0 to finally run Drakvuf with some basic arguments and plugins. We also transfer our `pdbconv.py` NT kernel debug JSON to dom0:
+33. We switch back to dom0 to finally run Drakvuf with some basic arguments and plugins. We also transfer our `pdbconv.py` NT kernel debug JSON to dom0:
 ```bash
 [armchairshaman@dom0 ~]$ qvm-run --pass-io --filter-escape-chars untrusted-qubes-builder 'cat ~/sandbox_win-7-hvm.json' > sandbox_win-7-hvm.json
 ## Optionally move the drakvuf folder to /root and chown
@@ -982,7 +982,7 @@ The Drakvuf arguments explained are as follows:
 
 The `ccze -A` command at the end is optional. It's a robust log colorizer, which makes the output of Drakvuf more readable by adding color to it. You'll need to install it with `qubes-dom0-update`. 
 
-33. Injecting a malware sample using DRAKVUF's `injector` hijacking the PID of taskmgr.exe (or any other PID with rwx access):
+34. Injecting a malware sample using DRAKVUF's `injector` hijacking the PID of taskmgr.exe (or any other PID with rwx access):
 ```bash
 [root@dom0 drakvuf]# ./build/injector -r /root/drakvuf/sandbox_win-7-hvm.json -d sandbox_win-7-hvm -i 1812 -m writefile -B /root/drakvuf/bumblebee_onkomsi2_loader.exe -e "C:\Users\user\AppData\Local\Temp\bumblebee_onkomsi2_loader.exe"
 ```
