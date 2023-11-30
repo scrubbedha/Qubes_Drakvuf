@@ -202,7 +202,7 @@ USE_QUBES_REPO_VERSION = $(RELEASE)
 ```bash
 [user@untrusted-qubes-builder qubes-builder]$ sudo dnf install distribution-gpg-keys -y
 ```
-5. A .patch file is a text file that contains the differences between two sets of code. It's a way of showing what changes need to be made to the original code in order to turn it into the updated code Create the .patch file below in the vmm-xen folder named `1203-libxl-altp2m-default.patch` and also add it to `xen.spec.in`:
+5. A .patch file is a text file that contains the differences between two sets of code. It's a way of showing what changes need to be made to the original code in order to turn it into the updated code. Create the .patch file below in the vmm-xen folder named `1203-libxl-altp2m-default.patch` and also add it to `xen.spec.in`:
 ```bash
 [user@untrusted-qubes-builder qubes-vmm-xen]$ vim 1203-libxl-altp2m-default.patch 
 --- a/tools/libs/light/libxl_create.c
@@ -962,7 +962,7 @@ daddb88936de450292977378f364b1101.json.xz
 ```bash
 [armchairshaman@dom0 ~]$ qvm-run --pass-io --filter-escape-chars untrusted-qubes-builder 'cat ~/sandbox_win-7-hvm.json' > sandbox_win-7-hvm.json
 ## Optionally move the drakvuf folder to /root and chown
-[armchairshaman@dom0 ~]$ sudo chown -R drakvuf/ && mv drakvuf /root
+[armchairshaman@dom0 ~]$ sudo chown -R root:root drakvuf/ && mv drakvuf /root
 [armchairshaman@dom0 ~]$ sudo su
 ## pwd is now /root/drakvuf
 [root@dom0 drakvuf]$ cd drakvuf
