@@ -456,7 +456,7 @@ max_gpfn = fefff
 starting altp2m_write_no_gpt 
 54 Error -1 enabling altp2m on domain
 ```
-14. To validate our patch actually worked for _sandbox prefixed HVMs, we can read the code in libxl_create.c: [https://github.com/xen-project/xen/blob/master/tools/libs/light/libxl_create.c#L1249-L1257](https://github.com/xen-project/xen/blob/master/tools/libs/light/libxl_create.c#L1249-L1257). Can you guess how we trigger this condition?
+14. To validate our patch actually worked for sandbox_ prefixed HVMs, we can read the code in libxl_create.c: [https://github.com/xen-project/xen/blob/master/tools/libs/light/libxl_create.c#L1249-L1257](https://github.com/xen-project/xen/blob/master/tools/libs/light/libxl_create.c#L1249-L1257). Can you guess how we trigger this condition?
 ```c++
     if (d_config->c_info.type != LIBXL_DOMAIN_TYPE_PV &&
         (libxl_defbool_val(d_config->b_info.nested_hvm) &&
