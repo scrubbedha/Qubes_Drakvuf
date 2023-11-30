@@ -93,7 +93,7 @@ Regular total system [backups](https://www.qubes-os.org/doc/how-to-back-up-resto
 
 Before we go any further, (***skip to the bottom if you want to jump straight to the step-by-step!)*** let's talk through some hypothetical security scenarios specific to Qubes, Drakvuf, LibVMI, and Xen.
     
-### Scenario 1: Instrospection negates hard isolation between Qubes domains (covert side channels)
+#### Scenario 1: Instrospection negates hard isolation between Qubes domains (covert side channels)
 
 Joanna Rutkovska and Tamas K Lengyel, respective creators of QubesOS and Drakvuf, discuss the security implications of VM introspection with regard to Qubes OS architecture in their [GitHub](https://github.com/QubesOS/qubes-issues/issues/2417#issuecomment-258604397)[dialogues](https://github.com/QubesOS/qubes-issues/issues/2417#issuecomment-264290983) in issue #2417. The overarching concerns are the potential for undermining hard isolation between Qubes domains and potential establishment of covert channels between VMs.
 
@@ -101,7 +101,7 @@ To counter these vulnerabilities, enabling Flask/XSM in Qubes and implementing t
 
 Unfortunately, Flask/XSM is not yet fully integrated into Qubes. This is still true today as of this writing in Qubes 4.2.0-rc5.
 
-### Scenario 2: Exploiting File Extractor/Memdump Plugin
+#### Scenario 2: Exploiting File Extractor/Memdump Plugin
 
   The [file extractor plugin](https://github.com/tklengyel/drakvuf/blob/main/src/plugins/fileextractor/fileextractor.cpp) in Drakvuf works by carving out PE/MZ and other files from the memory of a sandboxed Windows HVM. It seems likely that it does this based on the magic byte, although a thorough inspection of the underlying C++ code would be necessary to confirm this. 
 
@@ -111,11 +111,11 @@ Unfortunately, Flask/XSM is not yet fully integrated into Qubes. This is still t
 
 Assumingly there is a yet-undiscovered vulnerability in LibVMI or Drakvuf, a technically skilled attacker could possibly engineer a specific memory layout or other condition within the monitored guest domain. When this domain is introspected, it could trigger the hypothertical vulnerability, potentially leading to undefined behavior, code execution, or privilege escalation within dom0.
 
-### Scenario 4: Abuse of `altp2m` views
+#### Scenario 4: Abuse of `altp2m` views
 
 `altp2m` provides multiple views of guest physical memory. Seeing as these modes can be set at [runtime using `xc_hvm_param_set`](https://github.com/tklengyel/drakvuf/pull/681/commits) a sophisticated attacker could, theoretically, manipulate this mechanism's bugs or boundary cases to mislead libvmi, confusing it to change [modalities](https://xenbits.xen.org/docs/unstable/man/xl.cfg.5.html#altp2m-MODE) (say from "external only to "mixed") which could result it in-guest access to the altp2m interface. At the very least, such manipulation coud falsify forensic data, and at worst, leverage potential vulnerabilities in the introspection tool itself, resulting compromise or even a potential hypervisor breakout.
 
-### Scenario 5: Memory Analysis Exploitation
+#### Scenario 5: Memory Analysis Exploitation
 
 With the use of the [memdump](https://github.com/tklengyel/drakvuf/blob/main/src/plugins/memdump/memdump.cpp) plugin, complete memory segments from a guest's operating system (domU) are dumped into dom0 for subsequent analysis. 
 
@@ -129,7 +129,7 @@ Once Al-Khaser or a similar functionality identifies your Xen HVM, the executing
 
 Luckily, DRAKVUF's breakpoints are [safeguarded with EPT](https://github.com/tklengyel/drakvuf/issues/221), making it impossible for malware within the guest to directly detect or remove them. These breakpoints are also directly trapped to the hypervisor, further preventing malware from disabling them.
 
-### Scenarios Final Word
+#### Scenarios Final Word
 
 Several thought-provoking scenarios indeed exist. However, the high technical hurdle needed to carry out such attacks provides some degree of reassurance. Although unlikely, they cannot be ignored especially if APTs or other nation-state actors fit within your threat model [https://nitter.net/corcra/status/605356172158332929]("Your threat model is not my threat model but yours is cool too") 
 
@@ -143,7 +143,7 @@ In summary, it's always wise to proceed with caution! Realistically evaluate ris
 
 As we progress through the guide, we'll aim to mitigate these risks and minimize the exposure surface of dom0. We'll strive to adhere to all Qubes security hygiene and best practices laid out by the team at Invisible Labs (e.g., verifying git signatures, validating GPG signatures, taking extra precautions when moving files, folders, repositories, and potentially malicious artifacts to/from dom0, etc.).
 
-#### Qubes-builder + qubes-vmm-xen + altp2mhvm
+## Qubes-builder + qubes-vmm-xen + altp2mhvm
 
 To get started, we'll need to download or "pull down" qubes-builder, a tool that helps us build Qubes from source. We'll be making a small modification to qubes-vmm-xen via a patch, a component of Qubes that provides the entire Xen hypervisor and associated RPM packages. We'll add a single patch to Xen and install the resulting RPMs we build in dom0, the administrative isolated domain in Qubes.
 
