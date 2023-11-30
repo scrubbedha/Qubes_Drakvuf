@@ -989,5 +989,5 @@ Screenshots of DRAKVUF in action (analyzing a Bumblebee sample: https://tria.ge/
 ![Analyzing a Bumblebee malware sample: https://tria.ge/231127-fg3s3aec8y/behavioral2)](./images/Screenshot_2023-11-29_17-05-22.png)
 
 TO DO:
-Recompile qubes-vmm-xen with FLASK/XSM support and add [policy](https://github.com/tklengyel/xen/commit/bfdf2068b1ddf4eb1cd8338375f6f76afe862f63) for DRAKVUF
-Implement some kind of [Inspection VM](https://github.com/QubesOS/qubes-issues/issues/2417#issuecomment-456259242) that can be used with DRAKVUF/libvmi in lieu of dom0
+1. Recompile qubes-vmm-xen with FLASK/XSM support and add [policy](https://github.com/tklengyel/xen/commit/bfdf2068b1ddf4eb1cd8338375f6f76afe862f63) for DRAKVUF
+2. Implement some kind of [Inspection VM](https://github.com/QubesOS/qubes-issues/issues/2417#issuecomment-456259242) that can be used with DRAKVUF/libvmi in lieu of dom0
