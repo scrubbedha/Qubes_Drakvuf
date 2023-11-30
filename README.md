@@ -435,7 +435,7 @@ We can also try to extend libvirt/xen.xml. The process involves dropping an xml 
     <acpi/>
     <apic/>
     <viridian/>
-    <nestedhvm/> <!-- Enabling nestedhvm is DANGEROUS -->
+    <nestedhvm/> <!-- enabling nestedhvm is DANGEROUS -->
     <altp2m mode='external'/>
     <hap state='on'/> <!-- enable Hardware Assisted Paging -->
 {% endblock %}
@@ -485,7 +485,7 @@ starting altp2m_write_no_gpt
     <acpi/>
     <apic/>
     <viridian state='off'/>
-    <nestedhvm/>
+    <nestedhvm/> <!-- enabling nestedhvm is DANGEROUS -->
     <hap state='on'/> <!-- enable Hardware Assisted Paging -->
 {% endblock %}
 ````
