@@ -112,9 +112,13 @@ Unfortunately, Flask/XSM is not yet fully integrated into Qubes. This is still t
 
 Assumingly there is a yet-undiscovered vulnerability in LibVMI or Drakvuf, a technically skilled attacker could possibly engineer a specific memory layout or other condition within the monitored guest domain. When this domain is introspected, it could trigger the hypothertical vulnerability, potentially leading to undefined behavior, code execution, or privilege escalation within dom0.
 
-#### Scenario 4: Abuse of `altp2m` views
+#### ~~Scenario 4: Abuse of `altp2m` views
 
-`altp2m` provides multiple views of guest physical memory. Seeing as these modes can be set at [runtime using `xc_hvm_param_set`](https://github.com/tklengyel/drakvuf/pull/681/commits) a sophisticated attacker could, theoretically, manipulate this mechanism's bugs or boundary cases to mislead libvmi, confusing it to change [modalities](https://xenbits.xen.org/docs/unstable/man/xl.cfg.5.html#altp2m-MODE) (say from "external only to "mixed") which could result it in-guest access to the altp2m interface. At the very least, such manipulation coud falsify forensic data, and at worst, leverage potential vulnerabilities in the introspection tool itself, resulting compromise or even a potential hypervisor breakout.
+This scenario does *not* apply to DRAKVUF. Confirmed by [tklengyel]( https://github.com/QubesOS/qubes-issues/issues/2417#issuecomment-1832979273):
+
+*"There are different types of HVMPARAMs, and we specifically use one that's inaccessible to the guest (ie. `external`), see https://xenbits.xen.org/gitweb/?p=xen.git;a=blob;f=xen/include/public/hvm/params.h;h=a22b4ed45d2eb2dcaf61db9bef1f83b80d426a40;hb=HEAD#l252"*
+
+~~`altp2m` provides multiple views of guest physical memory. Seeing as these modes can be set at [runtime using `xc_hvm_param_set`](https://github.com/tklengyel/drakvuf/pull/681/commits) a sophisticated attacker could, theoretically, manipulate this mechanism's bugs or boundary cases to mislead libvmi, confusing it to change [modalities](https://xenbits.xen.org/docs/unstable/man/xl.cfg.5.html#altp2m-MODE) (say from "external only to "mixed") which could result it in-guest access to the altp2m interface. At the very least, such manipulation coud falsify forensic data, and at worst, leverage potential vulnerabilities in the introspection tool itself, resulting compromise or even a potential hypervisor breakout.
 
 #### Scenario 5: Memory Analysis Exploitation
 
