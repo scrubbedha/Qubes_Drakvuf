@@ -107,7 +107,7 @@ Unfortunately, Flask/XSM is not yet fully integrated into Qubes. This is still t
 
   These carved files quite possibly contain malicious .NET code or other malicious payloads intended for execution in MS-DOS. However, this approach carries substantial security risks. Even if we divert all the carved files to an offline Vault or disposable VM (dispVM), there remains a possibility of insecure data handling within dom0 during the transfer, enabling the potential for arbitrary code to be executed in dom0.
 
-### Scenario 3: Undiscovered Vulnerabilities in LibVMI or Drakvuf
+#### Scenario 3: Undiscovered Vulnerabilities in LibVMI or Drakvuf
 
 Assumingly there is a yet-undiscovered vulnerability in LibVMI or Drakvuf, a technically skilled attacker could possibly engineer a specific memory layout or other condition within the monitored guest domain. When this domain is introspected, it could trigger the hypothertical vulnerability, potentially leading to undefined behavior, code execution, or privilege escalation within dom0.
 
