@@ -55,7 +55,7 @@ Let's break the [DRAKVUF recommended](https://github.com/tklengyel/drakvuf/blob/
 {% endblock %}
 {% extends 'libvirt/xen.xml' %}
 ```
-  >[!INFO] Performance wise, DRAKVUF in the nested Qubes Xen-on-Xen Ubuntu HVM virtualization environment was untenable on my machine. Consider yourself informed if you opt to go the nested HVM route. 
+  > :information_source: Performance wise, DRAKVUF in the nested Qubes Xen-on-Xen Ubuntu HVM virtualization environment was untenable on my machine. Consider yourself informed if you opt to go the nested HVM route. 
 
 3. `ept=ad=0`: Shortly put this option disables the accessed and thus "dirty" or sullied flags in EPT. Inevitably resulting in a performance as it was introduced as a protective measure against the [Meltdown](https://en.wikipedia.org/wiki/Meltdown_(security_vulnerability) [transient execution class](https://www.usenix.org/system/files/sec19fall_canella_prepub.pdf) of CPU vulnerabilities back in 2018. A mechanism to keep track of whether an arbitrary memory page has been accessed or modified theoretically increases the difficulty for exploitation.
 
