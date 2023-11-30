@@ -923,7 +923,7 @@ The Drakvuf arguments explained are as follows:
 
 - `-a syscalls -a memdump -a fileextractor`: These arguments enable the syscalls, memdump, and fileextractor plugins. 
 - `-D /root/drakvuf/dumps`: This argument sets the directory where Drakvuf will dump files.
-- `-F -j 60 -t 600 -i 4048`: These arguments set various options for Drakvuf, such as the number of threads, the timeout for the job, and the PID of the rwx process to inject into (I use taskmgr.exe PID).
+- `-F -j 60 -t 600 -i 4048`: These arguments set various options for Drakvuf, such as `-F` Enable fast singlestepping (requires Xen 4.14+), `-j` injection timeout, `-t` timeout in seconds, and `-i` the PID of the rwx process to inject into (I tend to use the taskmgr.exe PID).
 - `--memdump-dir /root/drakvuf/dumps`: This argument sets the directory where Drakvuf will dump memory.
 - `-r /root/drakvuf/sandbox_win-7-hvm.json`: This argument sets the path to the JSON file containing the debug symbols for the kernel.
 - `-d sandbox_win-7-hvm`: This argument sets the name of the domain to monitor.
