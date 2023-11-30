@@ -37,9 +37,9 @@ Let's break the [DRAKVUF recommended](https://github.com/tklengyel/drakvuf/blob/
 
     Xen project history boffins will fondly remember these enhancements were introduced back in [version 4.5](https://xenproject.org/2015/01/15/less-is-more-in-the-new-xen-project-4-5-release/).Some proponents of forcing EPT/RVI suggest it _could_ help improve nested virtuailization performance (as in running Xen on QEMU or Xen-on-Xen etc). Nested virtualization is a divisive topic (and for good reason - see warning below) sure to spur spirited debate amongst users on both sides of the security vs. usability tradeoff argument. 
 
-    > :warning: **As of this writing Nested HVM in Xen is (https://github.com/QubesOS/qubes-issues/issues/2417#issuecomment-1833014246)[exploitably broken according to @DemiMarie who confirms that *"an L2 guest can break out to (host) dom0)"*]**
+    > :warning: **As of this writing Nested HVM in Xen is [exploitably broken](https://github.com/QubesOS/qubes-issues/issues/2417#issuecomment-1833014246) according to @DemiMarie who confirms that *"an L2 guest can break out to (host) dom0)"]**
  
-    > :information_source: Performance wise, DRAKVUF in the nested Qubes Xen-on-Xen Ubuntu HVM virtualization environment was abysmal anyway on my machine. Another reason to avoid it.
+    > :information_source: Performance wise, in my testing DRAKVUF in a Qubes Xen-on-Xen nestedvirt Ubuntu HVM environment was abysmal anyway on my machine. Another salient reason to avoid it.
    
 3. `ept=ad=0`: Shortly put this option disables the accessed and thus "dirty" or sullied flags in EPT. Inevitably resulting in a performance as it was introduced as a protective measure against the [Meltdown](https://en.wikipedia.org/wiki/Meltdown_(security_vulnerability) [transient execution class](https://www.usenix.org/system/files/sec19fall_canella_prepub.pdf) of CPU vulnerabilities back in 2018. A mechanism to keep track of whether an arbitrary memory page has been accessed or modified theoretically increases the difficulty for exploitation.
     
