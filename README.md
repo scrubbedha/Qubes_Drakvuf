@@ -16,7 +16,7 @@
 
 > :warning: **This guide may deviate from accepted hygienic Qubes best security practices, violate dom0 isolation concepts, and modify other sane defaults put forward by the Qubes OS project. VM introspection is not officially supported and poses many problems to the security of a system like Qubes OS architecture-wise. VMI access to all domains may negate any hard isolation between them.**
 
-> :warning: **Executing malware, even in a sandboxed environment, could have unintended consequences. Also, transferring externally compiled qubes-builder appVM untrusted binaries and CLI tools into dom0 into dom0 must be done with utmost caution especially those designed to analyze and manipulate potentially malicious memory dumps, carved files, and other artifacts.**
+> :warning: **Executing malware, even in a sandboxed environment, could have unintended consequences. Also, transferring externally compiled untrusted qubes-builder appVM binaries and CLI tools into dom0 must be done with utmost caution especially those designed to analyze and manipulate potentially malicious memory dumps, carved files, and other artifacts.**
 
 > :information_source: **Cautionary warnings aside, the author will try to adhere to Qubes security practices to ensure the integrity of dom0 (e.g. pulling down GPG keys of DRAKVUF, libVMI, dwarf2json, and volatility3 developers, verifying git release tags and/or commit signatures where possible).**
 
