@@ -756,7 +756,7 @@ Date:   Sun Nov 19 17:42:09 2023 -0500
 [...]
 ```
 24. Running autoreconf - this step is necessary to generate configuration scripts for the build:
-```yaml
+```bash
 [user@untrusted-qubes-builder drakvuf]$ autoreconf -vi
 autoreconf: export WARNINGS=
 autoreconf: Entering directory '.'
