@@ -234,7 +234,7 @@ USE_QUBES_REPO_VERSION = $(RELEASE)
 In this context, we're using a .patch file to modify the `libxl__domain_build_info_setdefault` function in `libxl_create.c`. This allows us to enable the `altp2m` feature for domains whose name starts with a particular prefix (by default "sandbox_"). Finally, it also appropriately releases the string holding the domain name after it's no longer needed.
 
 6. Building vmm-xen:
-```python
+```bash
 ## The `make remount` command remounts the /home directory with dev and suid options. This is necessary because the build process requires writing to certain files that are normally read-only.
 [user@untrusted-qubes-builder qubes-builder]$ make remount
 + sudo mount /home -o dev,suid,remount
