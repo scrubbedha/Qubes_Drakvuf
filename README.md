@@ -351,7 +351,7 @@ qubes-src/vmm-xen/pkgs/dom0-fc37/x86_64/xen-licenses-4.17.2-5.fc37.x86_64.rpm
 qubes-src/vmm-xen/pkgs/dom0-fc37/x86_64/xen-runtime-4.17.2-5.fc37.x86_64.rpm
 qubes-src/vmm-xen/pkgs/dom0-fc37/x86_64/xen-runtime-debuginfo-4.17.2-5.fc37.x86_64.rpm
 ```
-9. In dom0 invoke `qvm-run --pass-io` to securely transfer the package to dom0. This command filters out escape characters, providing an additional layer of security. This is necessary as dom0 is isolated for security reasons and does not have network access. Finally, extract the tarball to /tmp:
+9. In dom0 invoke `qvm-run --pass-io` to securely transfer the package to dom0. This is necessary as dom0 is isolated for security reasons and does not have network access. Finally, extract the tarball to /tmp:
 ```bash
 [armchairshaman@dom0 ~]$ qvm-run --pass-io untrusted-qubes-builder 'cat xen-4.17.2-5.tar.gz' > xen-4.17.2-5.tar.gz
  
