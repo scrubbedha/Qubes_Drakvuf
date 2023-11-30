@@ -135,7 +135,7 @@ Luckily, DRAKVUF's breakpoints are [safeguarded with EPT](https://github.com/tkl
 
 Several thought-provoking scenarios indeed exist. However, the high technical hurdle needed to carry out such attacks provides some degree of reassurance. Although unlikely, they cannot be ignored especially if APTs or other nation-state actors fit within your threat model. @corcra's quote comes to mind ["Your threat model is not my threat model but yours is cool too"](https://nitter.net/corcra/status/605356172158332929)
 
-Admittedly, a scenario 5 attack as described would be highly targeted and require a detailed prior understanding of the analysis software stack and security-focused OS the  target is using. If one finds themselves at the receiving end of such a sophisticated attack, it's reasonable to assume that you are being surveilled and compromised in other, more cost effective effective ways.
+Admittedly, a scenario 5 attack as described would be highly targeted and require a detailed prior understanding of the analysis software stack and security-focused OS the  target is using. If one finds themselves at the receiving end of such a sophisticated attack, it's reasonable to assume that you are being surveilled and compromised in other, more cost effective ways (traditional boots-on-the-ground policework and/or parallel construction.
 
 Furthermore, Qubes patches are designed to harden Xen hypervisor against such threats. Refer to the numerous [XSA](https://xenbits.xen.org/xsa/) Xen security advisories where vanilla Xen hypervisor is vulnerable but [Qubes](https://www.qubes-os.org/news/2023/10/10/xsas-released-on-2023-10-10/#xsas-that-do-not-affect-the-security-of-qubes-os) is not.
 
