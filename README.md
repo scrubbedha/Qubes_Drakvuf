@@ -124,7 +124,8 @@ Let's assume the malware sample executed within our sandbox is more modern and p
 
 The malware probes the sandboxed environment and conclusively identifies it as a Xen hypervisor aware VM by checking that your network interface MAC address starts with the [Xen (OUI) Prefix](https://wiki.xenproject.org/wiki/Xen_Networking#MAC_addresses) `"\x00\x16\x3E"` or `00:16:3e` or detects the installation of Windows Xen PV drivers or Qubes Windows Tools [QWT/qubes-windows-tools-cross](https://github.com/tabit-pro/qubes-windows-tools-cross/). 
 
-> :warning: **It is advisable to discontinue using QWT and Xen Project's Windows PV drivers in light of the[recent](https://lists.xenproject.org/archives/html/xen-an nunce/2023-07/msg00000.html) [compromise](https://www.qubes-os.org/news/2023/07/27/qsb-091/).**
+> :warning: 
+>**It is advisable to discontinue using QWT and Xen Project's Windows PV drivers in light of the[recent](https://lists.xenproject.org/archives/html/xen-an nunce/2023-07/msg00000.html) [compromise](https://www.qubes-os.org/news/2023/07/27/qsb-091/).**
 
 Once Al-Khaser or a similar functionality identifies your Xen HVM, the executing malware may start deliberately positioning specially crafted code, buffer overflow, or poisoned data in its memory space. As an example, consider a scenario with a parsing tool that has a buffer overflow vulnerability. The exact memory layout of the monitored guest VM could then trigger this overflow, leading to arbitrary code execution or a denial of service in the normally isolated dom0. 
 
