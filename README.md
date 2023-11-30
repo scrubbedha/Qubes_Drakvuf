@@ -371,7 +371,7 @@ xen-runtime-4.17.2-5.fc37.x86_64.rpm
 xen-runtime-debuginfo-4.17.2-5.fc37.x86_64.rpm
 ```
 10. Modify `/etc/default/grub` with DRAKVUF recommended `GRUB_CMDLINE_XEN_DEFAULT` options:
-```bash
+```
 [armchairshaman@dom0 ~]$ sudo vim /etc/default/grub
 "GRUB_CMDLINE_XEN_DEFAULT="console=none dom0_max_vcpus=4 dom0_vcpus_pin=1 force-ept=1 ept=ad=0 hap_1gb=0 hap_2mb=0 altp2m=1 hpet=legacy-replacement smt=0 sched=credit dom0_mem=4096M,max:4096M ucode=scan gnttab_max_frames=2048 gnttab_max_maptrack_frames=4096"
 
@@ -740,7 +740,7 @@ gpg: WARNING: This key is not certified with a trusted signature!
 gpg:          There is no indication that the signature belongs to the owner.
 Primary key fingerprint: 5DE3 E050 9C47 EA3C F04A  42D3 4AEE 18F8 3AFD EB23
 
-## Unfortunately like previously the majority of these commits are signed via the Gtihub web interface
+## Unfortunately like previously the majority of these commits are signed via the Github web interface
 [user@untrusted-qubes-builder drakvuf]$ git log --show-signature
 commit d5db212dd58c230e757947c23c26263d8ffd3851 (HEAD -> main, origin/main, origin/HEAD)
 gpg: Signature made Sun Nov 19 16:42:09 2023 CST
